@@ -1,0 +1,191 @@
+/* PHOTON — Menu Bar Styles */
+
+/* ── Bar ───────────────────────────────────────────────────── */
+.menubar {
+  gap: 0;
+  padding: 0 var(--sp-2);
+  font-size: var(--text-sm);
+  position: relative;
+}
+
+.menubar-home-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+  flex-shrink: 0;
+}
+
+.menubar-home-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.menubar-home-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.menubar-logo {
+  width: 18px;
+  height: 18px;
+  margin: 0 var(--sp-2) 0 var(--sp-1);
+  border-radius: var(--radius-xs);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.menubar-title {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  margin-right: var(--sp-4);
+  letter-spacing: 0.04em;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+/* ── Menu Items ────────────────────────────────────────────── */
+.menu-item {
+  position: relative;
+  padding: 0 var(--sp-3);
+  height: var(--menubar-h);
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+  font-size: var(--text-sm);
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ── Dropdown ──────────────────────────────────────────────── */
+.menu-dropdown {
+  position: absolute;
+  top: var(--menubar-h);
+  left: 0;
+  min-width: 220px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-1) 0;
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  animation: scaleIn var(--duration-normal) var(--ease-out) both;
+  transform-origin: top left;
+}
+
+.menu-dropdown.hidden {
+  display: none;
+}
+
+/* ── Dropdown Items ────────────────────────────────────────── */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: var(--sp-1) var(--sp-3);
+  margin: 0 var(--sp-1);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+  font-size: var(--text-sm);
+  gap: var(--sp-2);
+  min-height: 28px;
+}
+
+.dropdown-item:hover {
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+}
+
+.dropdown-item .item-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.dropdown-item:hover .item-icon {
+  color: var(--accent);
+}
+
+.dropdown-item .item-label {
+  flex: 1;
+}
+
+.dropdown-item .item-shortcut {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-left: var(--sp-4);
+}
+
+.dropdown-item .item-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+/* ── Separator ─────────────────────────────────────────────── */
+.dropdown-separator {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--sp-1) var(--sp-3);
+}
+
+/* ── Submenu ───────────────────────────────────────────────── */
+.dropdown-item.has-submenu {
+  position: relative;
+}
+
+.submenu {
+  position: absolute;
+  left: calc(100% + 2px);
+  top: -4px;
+  min-width: 200px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-1) 0;
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  animation: slideRight var(--duration-fast) var(--ease-out) both;
+}
+
+.submenu.hidden {
+  display: none;
+}
+
+/* ── Special: AI menu sparkle ──────────────────────────────── */
+.menu-item.ai-menu {
+  color: var(--accent);
+}
+.menu-item.ai-menu:hover {
+  color: var(--accent-hover);
+}

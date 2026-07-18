@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Photon — A professional digital image processing studio built for the web." />
+  <meta name="theme-color" content="#0D0D0F" />
+  <title>Photon</title>
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <!-- ── Dashboard View ──────────────────────────────── -->
+    <div id="view-dashboard" class="view"></div>
+
+    <!-- ── Editor View ─────────────────────────────────── -->
+    <div id="view-editor" class="view hidden">
+      <header id="menubar" class="menubar" role="menubar"></header>
+      <aside id="toolbar" class="toolbar" role="toolbar"></aside>
+      <main id="canvas-workspace" class="canvas-workspace"></main>
+      <aside id="panels" class="panels"></aside>
+      <footer id="statusbar" class="statusbar" role="status"></footer>
+    </div>
+  </div>
+  <div id="modal-root"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

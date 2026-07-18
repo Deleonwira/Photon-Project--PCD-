@@ -1,0 +1,90 @@
+/* PHOTON — Toolbar Styles */
+
+.toolbar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  padding: 0 var(--sp-1);
+}
+
+.toolbar-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--sp-1) 0;
+}
+
+/* ── Tool Button ───────────────────────────────────────────── */
+.tool-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.tool-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.tool-btn.active {
+  background: var(--accent-subtle);
+  color: var(--accent);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.tool-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Tooltip ───────────────────────────────────────────────── */
+.tool-tooltip {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-1) var(--sp-2);
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  z-index: var(--z-tooltip);
+  box-shadow: var(--shadow-md);
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.tool-tooltip .tt-shortcut {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-left: var(--sp-2);
+  font-size: 10px;
+}
+
+.tool-btn:hover .tool-tooltip {
+  opacity: 1;
+}
+
+/* ── AI special ────────────────────────────────────────────── */
+.tool-btn.ai-tool {
+  color: var(--accent-muted);
+}
+.tool-btn.ai-tool:hover {
+  color: var(--accent-hover);
+}
+.tool-btn.ai-tool.active {
+  color: var(--accent);
+}

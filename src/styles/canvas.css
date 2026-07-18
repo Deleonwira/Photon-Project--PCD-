@@ -1,0 +1,310 @@
+/* PHOTON — Canvas Workspace Styles */
+
+/* ── Workspace background (always dark, infinite desk) ─────── */
+.canvas-workspace {
+  background-color: #1a1a1e;
+  background-image: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Image container ───────────────────────────────────────── */
+.canvas-image-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-image-area img,
+.canvas-image-area canvas {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-xs);
+}
+
+/* ── Compare Button ────────────────────────────────────────── */
+.compare-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 11px;
+  white-space: nowrap;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.compare-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.compare-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── Comparison Modal ──────────────────────────────────────── */
+.compare-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compare-modal.hidden { display: none; }
+
+.compare-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.compare-content {
+  position: relative;
+  width: 90vw;
+  max-width: 1400px;
+  height: 80vh;
+  max-height: 800px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.compare-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.compare-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.compare-title {
+  text-align: center;
+  padding: 16px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.compare-panels {
+  display: flex;
+  flex: 1;
+  gap: 0;
+  padding: 0 16px 16px;
+  min-height: 0;
+}
+
+.compare-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.compare-label {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 0 8px;
+  flex-shrink: 0;
+}
+
+.compare-canvas-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.compare-canvas-wrap canvas {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-xs);
+}
+
+.compare-divider {
+  width: 1px;
+  background: var(--border-subtle);
+  margin: 24px 12px;
+  flex-shrink: 0;
+}
+
+/* ── Zoom Controls ─────────────────────────────────────────── */
+.zoom-controls {
+  position: absolute;
+  bottom: var(--sp-4);
+  right: var(--sp-4);
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  padding: 2px;
+  box-shadow: var(--shadow-md);
+  z-index: 5;
+}
+
+.zoom-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.zoom-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.zoom-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.zoom-level {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  min-width: 44px;
+  text-align: center;
+  padding: 0 var(--sp-1);
+}
+
+.zoom-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border-subtle);
+}
+
+/* ── Empty state (no project active) ───────────────────────── */
+.canvas-workspace.no-image {
+  background-color: var(--bg-primary);
+}
+
+/* ── Canvas Container ──────────────────────────────────────── */
+.canvas-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Canvas wrapper (holds main-canvas + AI overlay) ───────── */
+#canvas-wrapper {
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+}
+
+/* ── Canvas element (the "sheet of paper") ─────────────────── */
+#main-canvas {
+  display: block;
+  image-rendering: auto;
+}
+
+/* Transparent canvas shows classic checkerboard pattern */
+.canvas-workspace.transparent-bg #main-canvas {
+  background-image:
+    conic-gradient(
+      #cccccc 25%, transparent 25%,
+      transparent 50%, #cccccc 50%,
+      #cccccc 75%, transparent 75%
+    );
+  background-size: 16px 16px;
+  background-color: #ffffff;
+}
+
+/* Hide canvas when no project is active */
+.canvas-workspace.no-image #canvas-wrapper {
+  display: none;
+}
+
+/* Show canvas when project is active */
+.canvas-workspace.has-project #canvas-wrapper {
+  display: inline-block;
+}
+
+/* ── Drag-over state ───────────────────────────────────────── */
+.canvas-workspace.drag-over {
+  outline: 2px dashed var(--accent);
+  outline-offset: -4px;
+  background-color: rgba(76, 139, 245, 0.05);
+}
+
+.canvas-workspace.drag-over::after {
+  content: 'Drop image here';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: var(--sp-3) var(--sp-6);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  color: var(--accent);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  pointer-events: none;
+  z-index: 10;
+}

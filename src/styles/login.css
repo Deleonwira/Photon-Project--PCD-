@@ -1,0 +1,52 @@
+/* PHOTON — Login Screen Styles */
+
+.login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--bg-base);
+  padding: var(--sp-4);
+}
+
+.login-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.login-card .photon-input {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+
+.login-card .photon-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+#auth-submit {
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+#auth-submit:hover {
+  opacity: 0.9;
+}
+
+#auth-submit:active {
+  transform: scale(0.98);
+}

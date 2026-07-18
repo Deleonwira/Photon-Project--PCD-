@@ -1,0 +1,295 @@
+/* ============================================================
+   PHOTON — New Project Modal Styles
+   Structured dialog for project creation settings.
+   ============================================================ */
+
+.new-project-modal .modal-dialog {
+  max-width: 480px;
+  width: 90vw;
+}
+
+.new-project-modal .modal-body {
+  padding: 0;
+}
+
+/* ── Sections ─────────────────────────────────────────────── */
+.np-section {
+  padding: var(--sp-5) var(--sp-6);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.np-section:last-child {
+  border-bottom: none;
+}
+
+.np-section-label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sp-3);
+}
+
+/* ── Name Input ───────────────────────────────────────────── */
+.np-name-input {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-md);
+  transition: border-color var(--duration-normal) var(--ease-out);
+}
+
+.np-name-input:focus {
+  border-color: var(--accent);
+}
+
+/* ── Size Presets Grid ────────────────────────────────────── */
+.np-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+}
+
+.np-preset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-1);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out);
+}
+
+.np-preset:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-hover);
+}
+
+.np-preset.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.np-preset-name {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.np-preset-dims {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Dimension Inputs Row ─────────────────────────────────── */
+.np-dims-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+
+.np-dim-input {
+  flex: 1;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-align: center;
+  transition: border-color var(--duration-normal) var(--ease-out);
+}
+
+.np-dim-input:focus {
+  border-color: var(--accent);
+}
+
+.np-dims-x {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.np-dim-unit {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.np-lock-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.np-lock-btn:hover {
+  background: var(--bg-hover);
+}
+
+.np-lock-btn.locked {
+  color: var(--accent);
+}
+
+.np-lock-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Orientation Toggles ──────────────────────────────────── */
+.np-orientation {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.np-orient-btn {
+  flex: 1;
+  padding: var(--sp-1) var(--sp-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.np-orient-btn:hover {
+  color: var(--text-secondary);
+  border-color: var(--border-default);
+}
+
+.np-orient-btn.active {
+  color: var(--accent);
+  background: var(--accent-subtle);
+  border-color: var(--accent-muted);
+}
+
+/* ── Background Options ───────────────────────────────────── */
+.np-bg-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.np-bg-option {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.np-bg-option:hover {
+  border-color: var(--border-default);
+}
+
+.np-bg-option.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+}
+
+.np-bg-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.np-bg-swatch.checkerboard {
+  background: repeating-conic-gradient(#555 0% 25%, #888 0% 50%) 50% / 6px 6px;
+}
+
+.np-custom-color {
+  display: none;
+  margin-top: var(--sp-3);
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.np-custom-color.visible {
+  display: flex;
+}
+
+.np-color-picker {
+  width: 32px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding: 0;
+}
+
+.np-color-hex {
+  width: 80px;
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.np-footer {
+  padding: var(--sp-4) var(--sp-6);
+  display: flex;
+  gap: var(--sp-3);
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.np-btn-create {
+  padding: var(--sp-2) var(--sp-6);
+  background: var(--accent);
+  color: #fff;
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.np-btn-create:hover {
+  background: var(--accent-hover);
+}
+
+.np-btn-cancel {
+  padding: var(--sp-2) var(--sp-4);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.np-btn-cancel:hover {
+  color: var(--text-primary);
+}

@@ -1,0 +1,115 @@
+/* ============================================================
+   PHOTON — Master Grid Layout
+   Defines the 5-zone application grid.
+   
+   ┌────────────────────────────────────────────┐
+   │               MENU BAR (32px)              │
+   ├──────┬──────────────────────┬──────────────┤
+   │      │                      │              │
+   │ TOOL │   CANVAS WORKSPACE   │   PANELS     │
+   │ BAR  │        (1fr)         │   (280px)    │
+   │(48px)│                      │              │
+   │      │                      │              │
+   ├──────┴──────────────────────┴──────────────┤
+   │             STATUS BAR (26px)              │
+   └────────────────────────────────────────────┘
+   ============================================================ */
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+/* ── Editor grid layout ───────────────────────────────────── */
+#view-editor {
+  display: grid;
+  grid-template-columns: var(--toolbar-w) 1fr var(--panels-w);
+  grid-template-rows: var(--menubar-h) 1fr var(--statusbar-h);
+  grid-template-areas:
+    "menubar   menubar   menubar"
+    "toolbar   canvas    panels"
+    "statusbar statusbar statusbar";
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Zone: Menu Bar ────────────────────────────────────────── */
+.menubar {
+  grid-area: menubar;
+  z-index: var(--z-menubar);
+  display: flex;
+  align-items: center;
+  height: var(--menubar-h);
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-subtle);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Zone: Toolbar ─────────────────────────────────────────── */
+.toolbar {
+  grid-area: toolbar;
+  z-index: var(--z-toolbar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--toolbar-w);
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+  padding-top: var(--sp-2);
+  overflow-y: auto;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Zone: Canvas Workspace ────────────────────────────────── */
+.canvas-workspace {
+  grid-area: canvas;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+}
+
+/* ── Zone: Panels ──────────────────────────────────────────── */
+.panels {
+  grid-area: panels;
+  z-index: var(--z-panels);
+  display: flex;
+  flex-direction: column;
+  width: var(--panels-w);
+  background-color: var(--bg-secondary);
+  border-left: 1px solid var(--border-subtle);
+  overflow: hidden;
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.panels.collapsed {
+  width: 0;
+  border-left: none;
+  overflow: hidden;
+}
+
+/* ── Zone: Status Bar ──────────────────────────────────────── */
+.statusbar {
+  grid-area: statusbar;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--statusbar-h);
+  background-color: var(--bg-tertiary);
+  border-top: 1px solid var(--border-subtle);
+  padding: 0 var(--sp-3);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Grid collapse when panels hidden ──────────────────────── */
+#view-editor.panels-collapsed {
+  grid-template-columns: var(--toolbar-w) 1fr 0px;
+}

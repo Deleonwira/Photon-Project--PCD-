@@ -1,0 +1,208 @@
+/* PHOTON — Interaction Layer Styles
+ * Layering order: canvas bg → image overlay → canvas border → select handles
+ */
+
+/* ── Layer Container ─────────────────────────────────────── */
+.interaction-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Active state — captures clicks for selection */
+.interaction-layer.active {
+  pointer-events: all;
+}
+
+/* ── Image Overlay (can overflow canvas bounds) ──────────── */
+.img-overlay {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  z-index: 6;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Slight opacity reduction for parts outside canvas — 
+     the canvas border makes the boundary clear */
+}
+
+/* ── Canvas Border Outline (topmost visual boundary) ─────── */
+.canvas-border-outline {
+  position: absolute;
+  display: none;
+  z-index: 8;
+  pointer-events: none;
+  border: 2px solid rgba(76, 139, 245, 0.6);
+  box-shadow:
+    inset 0 0 0 1px rgba(76, 139, 245, 0.15),
+    0 0 12px rgba(76, 139, 245, 0.1);
+  border-radius: 1px;
+}
+
+/* ── Selection Box ───────────────────────────────────────── */
+.select-box {
+  position: absolute;
+  display: none;
+  z-index: 10;
+  pointer-events: none;
+  border: 2px solid var(--accent, #4C8BF5);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Corner Handles ──────────────────────────────────────── */
+.select-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border: 2px solid var(--accent, #4C8BF5);
+  border-radius: 50%;
+  pointer-events: all;
+  z-index: 11;
+  transition: transform 0.1s ease, background 0.1s ease;
+}
+
+.select-handle:hover {
+  transform: scale(1.3);
+  background: var(--accent, #4C8BF5);
+}
+
+.select-handle:active {
+  transform: scale(1.1);
+}
+
+/* Corner positions */
+.select-handle.nw {
+  top: -6px;
+  left: -6px;
+  cursor: nw-resize;
+}
+
+.select-handle.ne {
+  top: -6px;
+  right: -6px;
+  cursor: ne-resize;
+}
+
+.select-handle.sw {
+  bottom: -6px;
+  left: -6px;
+  cursor: sw-resize;
+}
+
+.select-handle.se {
+  bottom: -6px;
+  right: -6px;
+  cursor: se-resize;
+}
+
+/* ══════════════════════════════════════════════════════════════ */
+/* ── CROP OVERLAY ────────────────────────────────────────────  */
+/* ══════════════════════════════════════════════════════════════ */
+
+.crop-overlay {
+  position: absolute;
+  z-index: 12;
+  pointer-events: none;
+}
+
+/* ── Dim areas (semi-transparent black mask) ─────────────────  */
+.crop-dim {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: all;
+  cursor: default;
+}
+
+/* ── Crop window (clear area with border) ────────────────────  */
+.crop-window {
+  position: absolute;
+  border: 2px dashed rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+  pointer-events: all;
+  cursor: move;
+  z-index: 13;
+}
+
+/* ── Rule-of-thirds grid ─────────────────────────────────────  */
+.crop-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Two vertical + two horizontal lines at 33% and 66% */
+  background:
+    linear-gradient(to right, transparent 33.3%, rgba(255,255,255,0.25) 33.3%, rgba(255,255,255,0.25) 33.5%, transparent 33.5%,
+                              transparent 66.6%, rgba(255,255,255,0.25) 66.6%, rgba(255,255,255,0.25) 66.8%, transparent 66.8%),
+    linear-gradient(to bottom, transparent 33.3%, rgba(255,255,255,0.25) 33.3%, rgba(255,255,255,0.25) 33.5%, transparent 33.5%,
+                               transparent 66.6%, rgba(255,255,255,0.25) 66.6%, rgba(255,255,255,0.25) 66.8%, transparent 66.8%);
+}
+
+/* ── Crop handles (8 total) ──────────────────────────────────  */
+.crop-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border: 2px solid #4C8BF5;
+  pointer-events: all;
+  z-index: 14;
+  transition: transform 0.1s ease, background 0.1s ease;
+}
+
+.crop-handle:hover {
+  transform: scale(1.3);
+  background: #4C8BF5;
+}
+
+/* Corner handles */
+.crop-handle[data-crop-handle="nw"] {
+  top: -6px; left: -6px;
+  cursor: nw-resize;
+  border-radius: 50%;
+}
+.crop-handle[data-crop-handle="ne"] {
+  top: -6px; right: -6px;
+  cursor: ne-resize;
+  border-radius: 50%;
+}
+.crop-handle[data-crop-handle="sw"] {
+  bottom: -6px; left: -6px;
+  cursor: sw-resize;
+  border-radius: 50%;
+}
+.crop-handle[data-crop-handle="se"] {
+  bottom: -6px; right: -6px;
+  cursor: se-resize;
+  border-radius: 50%;
+}
+
+/* Edge handles (rectangles) */
+.crop-handle[data-crop-handle="n"] {
+  top: -5px; left: 50%; transform: translateX(-50%);
+  width: 20px; height: 6px;
+  border-radius: 3px;
+  cursor: n-resize;
+}
+.crop-handle[data-crop-handle="s"] {
+  bottom: -5px; left: 50%; transform: translateX(-50%);
+  width: 20px; height: 6px;
+  border-radius: 3px;
+  cursor: s-resize;
+}
+.crop-handle[data-crop-handle="e"] {
+  right: -5px; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 20px;
+  border-radius: 3px;
+  cursor: e-resize;
+}
+.crop-handle[data-crop-handle="w"] {
+  left: -5px; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 20px;
+  border-radius: 3px;
+  cursor: w-resize;
+}

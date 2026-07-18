@@ -1,0 +1,44 @@
+/* PHOTON — Status Bar Styles */
+
+.statusbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-secondary);
+}
+
+.statusbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 0 var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  border-left: 1px solid var(--border-subtle);
+  height: 16px;
+}
+
+.status-item:first-child {
+  border-left: none;
+}
+
+.status-msg {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.status-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-default);
+  flex-shrink: 0;
+}

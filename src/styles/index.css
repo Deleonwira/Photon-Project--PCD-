@@ -1,0 +1,266 @@
+/* ============================================================
+   PHOTON — Design System
+   Core CSS variables, reset, typography, and utilities.
+   This file must be imported FIRST — all other styles depend on it.
+   ============================================================ */
+
+/* ── Google Fonts (loaded via index.html <link>) ───────────── */
+/* Inter: UI text | JetBrains Mono: numeric/code values         */
+
+/* ── Custom Properties ─────────────────────────────────────── */
+:root {
+  /* — Color: Backgrounds (darkest → lightest) — */
+  --bg-primary:    #0D0D0F;
+  --bg-secondary:  #141416;
+  --bg-tertiary:   #1A1A1E;
+  --bg-elevated:   #222226;
+  --bg-hover:      #2A2A30;
+  --bg-active:     #32323A;
+  --bg-canvas:     #18181C;
+
+  /* — Color: Borders — */
+  --border-subtle:  #232328;
+  --border-default: #2E2E35;
+  --border-strong:  #3E3E48;
+  --border-active:  #4A4A55;
+
+  /* — Color: Text — */
+  --text-primary:   #E8E8ED;
+  --text-secondary: #9898A6;
+  --text-muted:     #5C5C6A;
+  --text-disabled:  #3A3A44;
+
+  /* — Color: Accent (Electric Blue) — */
+  --accent:         #4C8BF5;
+  --accent-hover:   #6BA1FF;
+  --accent-muted:   #3A6DD4;
+  --accent-subtle:  rgba(76, 139, 245, 0.12);
+  --accent-glow:    rgba(76, 139, 245, 0.25);
+
+  /* — Color: Semantic — */
+  --success:        #34D399;
+  --success-subtle: rgba(52, 211, 153, 0.12);
+  --warning:        #FBBF24;
+  --warning-subtle: rgba(251, 191, 36, 0.12);
+  --danger:         #EF4444;
+  --danger-subtle:  rgba(239, 68, 68, 0.12);
+
+  /* — Color: Channels (for histogram) — */
+  --channel-r:      #FF6B6B;
+  --channel-g:      #51CF66;
+  --channel-b:      #5C7CFA;
+  --channel-all:    #CED4DA;
+
+  /* — Color: Glassmorphism — */
+  --glass-bg:       rgba(22, 22, 26, 0.80);
+  --glass-border:   rgba(255, 255, 255, 0.06);
+  --glass-blur:     12px;
+
+  /* — Typography — */
+  --font-sans:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:      'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+
+  --text-xs:   11px;
+  --text-sm:   12px;
+  --text-base: 13px;
+  --text-md:   14px;
+  --text-lg:   16px;
+  --text-xl:   20px;
+  --text-2xl:  28px;
+  --text-3xl:  36px;
+
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  --leading-tight:   1.2;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+
+  /* — Spacing (4px base) — */
+  --sp-0:  0px;
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-7:  28px;
+  --sp-8:  32px;
+  --sp-9:  36px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* — Border Radius — */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-full: 9999px;
+
+  /* — Shadows — */
+  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg:    0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl:    0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-glow:  0 0 20px var(--accent-glow);
+
+  /* — Z-Index Scale — */
+  --z-base:      1;
+  --z-toolbar:   10;
+  --z-panels:    10;
+  --z-menubar:   50;
+  --z-dropdown:  60;
+  --z-tooltip:   70;
+  --z-modal:     100;
+  --z-overlay:   90;
+
+  /* — Transitions — */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:   100ms;
+  --duration-normal: 180ms;
+  --duration-slow:   300ms;
+  --duration-slower: 500ms;
+
+  /* — Layout Dimensions — */
+  --menubar-h:  32px;
+  --toolbar-w:  48px;
+  --panels-w:   280px;
+  --statusbar-h: 26px;
+}
+
+
+/* ── CSS Reset ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* ── Custom Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-default) transparent;
+}
+
+/* ── Selection ─────────────────────────────────────────────── */
+::selection {
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+}
+
+/* ── Focus Ring ────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* ── Utility: Mono text ────────────────────────────────────── */
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+}
+
+/* ── Utility: Text truncation ──────────────────────────────── */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Utility: Visually hidden (screen reader only) ─────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Utility: No select ────────────────────────────────────── */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
