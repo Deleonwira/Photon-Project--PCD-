@@ -6,62 +6,62 @@ const TOUR_STEPS = {
   login: [
     {
       target: '.login-card',
-      title: 'Selamat Datang di Photon Login',
-      body: 'Halaman ini memungkinkan Anda untuk masuk ke akun Photon Anda guna mengelola proyek dan preferensi pengolahan citra.',
+      title: 'Welcome to Photon Login',
+      body: 'Log in to your Photon account to manage your projects, preferences, and cloud image processing storage.',
     },
     {
       target: '#auth-skip',
-      title: 'Mode Tamu (Guest Mode)',
-      body: 'Ingin mencoba langsung tanpa mendaftar? Klik tombol "Continue as Guest" untuk langsung membuka studio pengolahan citra.',
+      title: 'Guest Mode',
+      body: 'Want to try without registering? Click "Continue as Guest" to jump straight into the image processing studio.',
     }
   ],
   dashboard: [
     {
       target: '#dashboard-bar',
-      title: 'Header & Pencarian Proyek',
-      body: 'Di bilah atas ini Anda dapat mencari proyek berdasarkan nama, melihat akun aktif, dan mengakses tombol Panduan Interaktif.',
+      title: 'Header & Project Search',
+      body: 'Use the top bar to search projects by name, view your active account, and restart this Interactive Tour anytime.',
     },
     {
       target: '#new-project-card',
-      title: 'Buat Proyek Baru',
-      body: 'Klik kartu ini untuk membuat proyek pengolahan citra baru dengan dimensi canvas kustom dan latar belakang pilihan Anda.',
+      title: 'Create New Project',
+      body: 'Click this card to create a fresh image processing project with custom canvas dimensions and background options.',
     },
     {
       target: '#project-grid',
-      title: 'Daftar Proyek Terbaru',
-      body: 'Setiap proyek yang Anda edit akan otomatis tersimpan di penyimpanan browser lokal (IndexedDB) dan ditampilkan di sini.',
+      title: 'Recent Projects',
+      body: 'Every project you edit is automatically saved in your local browser storage (IndexedDB) and listed here.',
     },
     {
       target: '#btn-dashboard-guide',
-      title: 'Tombol Bantuan & Panduan',
-      body: 'Anda dapat memutar ulang tur interaktif ini kapan saja dengan mengklik tombol "Panduan" di sudut kanan atas.',
+      title: 'Help & Interactive Guide',
+      body: 'Replay this interactive tour at any time by clicking the "Guide" button in the top right corner.',
     }
   ],
   editor: [
     {
       target: '#menubar',
-      title: '1. Bilah Menu Utama (MenuBar)',
-      body: 'Akses seluruh fungsi pengolahan citra: File (buka, simpan, ekspor), Edit, Filter PCD (Canny, Sobel, Gaussian), Transformasi, dan AI.',
+      title: '1. Main Menu Bar',
+      body: 'Access all digital image processing tools: File (open, save, export), Edit, Filters (Canny, Sobel, Gaussian), Transforms, and AI.',
     },
     {
       target: '#toolbar',
-      title: '2. Bilah Alat (Toolbar)',
-      body: 'Gunakan toolbar di sisi kiri untuk memilih alat seperti Pointer, Crop, Transformasi, Filter Warna, Zoom, dan Penyesuaian.',
+      title: '2. Left Toolbar',
+      body: 'Use the toolbar to select tools like Pointer/Select, Crop, Rotation, Color Filters, Zoom, and Adjustments.',
     },
     {
       target: '#canvas-workspace',
-      title: '3. Ruang Kerja Canvas',
-      body: 'Area utama visualisasi citra. Drag & Drop file gambar ke sini atau manfaatkan fitur perbandingan Sebelum/Sesudah (Before/After).',
+      title: '3. Canvas Workspace',
+      body: 'The main image workspace. Drag & Drop image files here or use the Before/After comparison mode.',
     },
     {
       target: '#panels',
-      title: '4. Panel Inspektor (Properties, Histogram, Layers)',
-      body: 'Atur parameter filter secara presisi di panel Properti, lihat analisis histogram RGB real-time, dan kelola layer gambar.',
+      title: '4. Inspector Panels (Properties, Histogram, Layers)',
+      body: 'Fine-tune filter parameters in Properties, view real-time RGB histograms, and manage edit history in Layers.',
     },
     {
       target: '#statusbar',
-      title: '5. Bilah Status (StatusBar)',
-      body: 'Menampilkan dimensi citra (piksel), persentase zoom, koordinat kursor mouse, dan status operasi pengolahan yang berjalan.',
+      title: '5. Status Bar',
+      body: 'Displays image dimensions, zoom level, cursor coordinates, and live operation status messages.',
     }
   ]
 };
@@ -126,7 +126,7 @@ export function startTour(view, force = false) {
   const steps = TOUR_STEPS[view];
   if (!steps || steps.length === 0) return;
 
-  // Check if tour was already completed (unless forced by clicking "Panduan")
+  // Check if tour was already completed (unless forced by clicking "Guide")
   const key = `photon_tour_completed_${view}`;
   if (!force && localStorage.getItem(key) === 'true') {
     return;
@@ -221,8 +221,8 @@ function renderCurrentStep() {
   // Tooltip HTML
   tooltipElem.innerHTML = `
     <div class="guide-header">
-      <span class="guide-step-badge">${bookOpen()} Langkah ${currentStepIndex + 1} dari ${total}</span>
-      <button class="guide-skip-btn" id="guide-skip-btn">Lewati Tour</button>
+      <span class="guide-step-badge">${bookOpen()} Step ${currentStepIndex + 1} of ${total}</span>
+      <button class="guide-skip-btn" id="guide-skip-btn">Skip Tour</button>
     </div>
 
     <div class="guide-progress-bar">
@@ -234,10 +234,10 @@ function renderCurrentStep() {
 
     <div class="guide-footer">
       <button class="guide-btn-prev" id="guide-prev-btn" ${currentStepIndex === 0 ? 'disabled' : ''}>
-        &larr; Sebelumnya
+        &larr; Previous
       </button>
       <button class="guide-btn-next" id="guide-next-btn">
-        ${isLast ? 'Selesai ' + check() : 'Lanjut &rarr;'}
+        ${isLast ? 'Finish ' + check() : 'Next &rarr;'}
       </button>
     </div>
   `;

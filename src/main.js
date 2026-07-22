@@ -38,9 +38,10 @@ import { initLayersPanel } from './components/LayersPanel.js';
 import { initStatusBar } from './components/StatusBar.js';
 import { initWelcomeScreen } from './components/WelcomeScreen.js';
 import { initShortcuts, register } from './utils/shortcuts.js';
-import { openFileDialog, saveImage, initProjectCanvas, loadProjectFromStore, getCanvas, getLoadedImage } from './services/ImageEngine.js';
+import { openFileDialog, saveImage, initProjectCanvas, loadProjectFromStore, getCanvas, getLoadedImage, deleteLoadedImage } from './services/ImageEngine.js';
 import { undo, redo } from './services/HistoryStack.js';
 import { initInteractionLayer } from './components/InteractionLayer.js';
+import { initClipboardHandler, pasteFromClipboard } from './services/ClipboardService.js';
 
 // ── Dashboard Components ───────────────────────────────────
 import { initDashboard } from './components/Dashboard.js';
@@ -64,6 +65,8 @@ function mountEditor() {
   if (editorMounted) return;
   editorMounted = true;
 
+  initClipboardHandler();
+
   initMenuBar(document.getElementById('menubar'));
   initToolbar(document.getElementById('toolbar'));
   initCanvas(document.getElementById('canvas-workspace'));
@@ -83,6 +86,20 @@ function mountEditor() {
     autoSaveCurrentProject().then(() => setState({ statusMessage: 'Project saved' }));
   });
   register('ctrl+e', 'Export', () => openExportModal());
+  register('ctrl+v', 'Paste Image', () => pasteFromClipboard());
+  register('delete', 'Delete Image', () => {
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable)) return;
+    deleteLoadedImage();
+  });
+  register('backspace', 'Delete Image', () => {
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable)) return;
+    deleteLoadedImage();
+  });
+  register('ctrl+b', 'Toggle Panels', () => {
+    setState({ panelsCollapsed: !getState().panelsCollapsed });
+  });
   register('ctrl+z', 'Undo', () => undo());
   register('ctrl+y', 'Redo', () => redo());
   register('ctrl+=', 'Zoom In', () => {
@@ -282,6 +299,12 @@ window.addEventListener('photon-save-project', () => {
 
 // ── Boot ───────────────────────────────────────────────────
 subscribe('currentView', switchView);
+subscribe('panelsCollapsed', (collapsed) => {
+  const panelsEl = document.getElementById('panels');
+  const viewEditorEl = document.getElementById('view-editor');
+  if (panelsEl) panelsEl.classList.toggle('collapsed', !!collapsed);
+  if (viewEditorEl) viewEditorEl.classList.toggle('panels-collapsed', !!collapsed);
+});
 initRouter();
 
 // Auto-show Splash Screen on initial application load (unless disabled by user)

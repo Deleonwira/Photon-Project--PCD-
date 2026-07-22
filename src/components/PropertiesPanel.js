@@ -3,7 +3,7 @@ import { chevronDown } from '../icons/icons.js';
 import { subscribe, getState, setState } from '../utils/state.js';
 import { resize, crop, translate, flipH, flipV } from '../services/TransformService.js';
 import { applyCrop, cancelCrop, getOverlayEl, getAIBoxesEl, getCanvasMapping } from './InteractionLayer.js';
-import { jsRotateFree as _jsRotateFree, getLoadedImage, setLoadedImage } from '../services/ImageEngine.js';
+import { jsRotateFree as _jsRotateFree, getLoadedImage, setLoadedImage, deleteLoadedImage } from '../services/ImageEngine.js';
 import { pushState, onHistoryRestore } from '../services/HistoryStack.js';
 import { adjustBrightnessContrast, equalizeHistogram, sharpen as applySharpen } from '../services/EnhanceService.js';
 import { adjustColor } from '../services/ColorService.js';
@@ -88,11 +88,11 @@ function slider(label, id, min, max, value, unit = '') {
 function section(title, body, open = true) {
   return `
     <div class="panel-section${open ? '' : ' collapsed'}">
-      <div class="panel-section-header">
+      <div class="panel-section-header" title="Toggle section">
         <span class="panel-section-title">${title}</span>
         <span class="panel-section-toggle">${chevronDown()}</span>
       </div>
-      <div class="panel-section-body" style="max-height:500px">${body}</div>
+      <div class="panel-section-body">${body}</div>
     </div>`;
 }
 
@@ -120,14 +120,31 @@ function _flashApplied(btn) {
 
 // ── Context views per tool ─────────────────────────────────
 const views = {
-  pointer: () => section('Image Info', `
-    <div class="info-row"><span class="info-label">Filename</span><span class="info-value">untitled.png</span></div>
-    <div class="info-row"><span class="info-label">Dimensions</span><span class="info-value">1920 × 1080</span></div>
-    <div class="info-row"><span class="info-label">Format</span><span class="info-value">PNG</span></div>
-    <div class="info-row"><span class="info-label">File Size</span><span class="info-value">2.4 MB</span></div>
-    <div class="info-row"><span class="info-label">Color Mode</span><span class="info-value">RGB</span></div>
-    <div class="info-row"><span class="info-label">Bit Depth</span><span class="info-value">8-bit</span></div>
-  `),
+  pointer: () => {
+    const info = getState().imageInfo || {};
+    const loaded = getState().imageLoaded;
+    if (!loaded) {
+      return section('Image Info', `
+        <div style="text-align:center;padding:var(--sp-4) 0;color:var(--text-muted);font-size:var(--text-xs)">
+          <p>No image open</p>
+          <p style="margin-top:var(--sp-1);font-size:10px">Open or paste an image to begin</p>
+        </div>
+      `);
+    }
+    return section('Image Info', `
+      <div class="info-row"><span class="info-label">Filename</span><span class="info-value" id="info-name">${info.name || 'untitled.png'}</span></div>
+      <div class="info-row"><span class="info-label">Dimensions</span><span class="info-value" id="info-dims">${info.width || 0} × ${info.height || 0}</span></div>
+      <div class="info-row"><span class="info-label">Format</span><span class="info-value" id="info-fmt">${info.format || 'PNG'}</span></div>
+      <div class="info-row"><span class="info-label">File Size</span><span class="info-value" id="info-size">${info.size || '—'}</span></div>
+      <div class="info-row"><span class="info-label">Color Mode</span><span class="info-value">RGB</span></div>
+      <div class="info-row"><span class="info-label">Bit Depth</span><span class="info-value">8-bit</span></div>
+      <div style="margin-top:var(--sp-3)">
+        <button class="btn-sm" id="btn-delete-img" style="width:100%;background:rgba(255,68,68,0.15);color:#ff4444;border-color:rgba(255,68,68,0.3);font-weight:600">
+          Delete Image
+        </button>
+      </div>
+    `);
+  },
 
   brightness: () =>
     section('Brightness & Contrast',
@@ -1967,8 +1984,16 @@ function wireSliders(root) {
 
 function wireSections(root) {
   root.querySelectorAll('.panel-section-header').forEach(header => {
-    header.addEventListener('click', () => {
+    header.addEventListener('click', (e) => {
+      e.stopPropagation();
       header.parentElement.classList.toggle('collapsed');
     });
   });
+
+  const btnDelete = root.querySelector('#btn-delete-img');
+  if (btnDelete) {
+    btnDelete.addEventListener('click', () => {
+      deleteLoadedImage();
+    });
+  }
 }

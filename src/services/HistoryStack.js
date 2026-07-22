@@ -1,6 +1,6 @@
 /* PHOTON — History Stack */
 
-import { getImageData, putImageData, getOriginalImageData, onImageLoad, getLoadedImage, setLoadedImage } from './ImageEngine.js';
+import { getImageData, putImageData, getOriginalImageData, resetToOriginalImage, onImageLoad, getLoadedImage, setLoadedImage } from './ImageEngine.js';
 import { setState, getState } from '../utils/state.js';
 
 // Auto-clear history when a new image is loaded
@@ -106,16 +106,11 @@ export function redo() {
 
 // ── Reset to Original ───────────────────────────────────────
 export function resetImage() {
-  const original = getOriginalImageData();
-  if (!original) {
-    setState({ statusMessage: 'No original image to reset to' });
-    return;
+  pushState('Reset Image');
+  const ok = resetToOriginalImage();
+  if (ok) {
+    _restoreHooks.forEach(fn => fn());
   }
-  pushState();  // Save current state so reset is undoable
-  putImageData(original);
-  // Fire restore hooks to clear enhancement state
-  _restoreHooks.forEach(fn => fn());
-  setState({ statusMessage: 'Reset to original image' });
 }
 
 // ── Clear history (on new image load) ───────────────────────

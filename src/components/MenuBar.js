@@ -5,7 +5,8 @@ import { setState, getState, subscribe } from '../utils/state.js';
 import { navigate } from '../utils/router.js';
 import { openExportModal } from './ExportModal.js';
 import { openNewProjectModal } from './NewProjectModal.js';
-import { openFileDialog, saveImage } from '../services/ImageEngine.js';
+import { openFileDialog, saveImage, deleteLoadedImage } from '../services/ImageEngine.js';
+import { pasteFromClipboard } from '../services/ClipboardService.js';
 import { undo, redo, resetImage, pushState } from '../services/HistoryStack.js';
 import { flipH, flipV, rotate90CW, rotate90CCW, rotate180 } from '../services/TransformService.js';
 import { equalizeHistogram } from '../services/EnhanceService.js';
@@ -24,12 +25,15 @@ const MENUS = [
     { id: 'export', label: 'Export As...', shortcut: 'ctrl+e' },
     'sep',
     { id: 'reset', label: 'Reset Image' },
+    { id: 'delete-image', label: 'Delete Image', shortcut: 'Delete' },
     'sep',
     { id: 'exit', label: 'Back to Dashboard' },
   ]},
   { id: 'edit', label: 'Edit', items: [
     { id: 'undo', label: 'Undo', shortcut: 'ctrl+z' },
     { id: 'redo', label: 'Redo', shortcut: 'ctrl+y' },
+    'sep',
+    { id: 'paste', label: 'Paste Image', shortcut: 'ctrl+v' },
     'sep',
     { id: 'crop-edit', label: 'Crop' },
     { id: 'resize-edit', label: 'Resize' },
@@ -92,6 +96,7 @@ const MENUS = [
     { id: 'fit', label: 'Fit to Screen', shortcut: 'ctrl+0' },
     { id: 'actual', label: 'Actual Size', shortcut: 'ctrl+1' },
     'sep',
+    { id: 'toggle-panels', label: 'Toggle Right Panel', shortcut: 'ctrl+b' },
     { id: 'split-toggle', label: 'Before / After Compare' },
     'sep',
     { id: 'hist-panel', label: 'Histogram Panel' },
@@ -101,9 +106,9 @@ const MENUS = [
     { id: 'cnn', label: 'Object Recognition (CNN)' },
   ]},
   { id: 'help', label: 'Help', items: [
-    { id: 'tour-guide', label: 'Panduan Fitur (Interactive Tour)' },
+    { id: 'tour-guide', label: 'Feature Guide (Interactive Tour)' },
     'sep',
-    { id: 'splash-about', label: 'Tentang Photon (Splash Screen)' },
+    { id: 'splash-about', label: 'About Photon (Splash Screen)' },
   ]},
 ];
 
@@ -296,8 +301,20 @@ function handleMenuAction(action) {
     redo();
     return;
   }
+  if (action === 'paste') {
+    pasteFromClipboard();
+    return;
+  }
+  if (action === 'delete-image') {
+    deleteLoadedImage();
+    return;
+  }
   if (action === 'reset') {
     resetImage();
+    return;
+  }
+  if (action === 'toggle-panels') {
+    setState({ panelsCollapsed: !getState().panelsCollapsed });
     return;
   }
   // ── Transform actions (C3) ──────────────────────────────

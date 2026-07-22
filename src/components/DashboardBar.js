@@ -18,12 +18,12 @@ export function initDashboardBar(container) {
       </div>
     </div>
     <div class="dashboard-bar-right" style="display:flex;align-items:center;gap:10px;margin-right:16px">
-      <button id="btn-dashboard-splash" class="btn-sm" style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-tertiary);color:var(--text-secondary);border:1px solid var(--border-default);border-radius:6px;padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s" title="Buka Layar Sambutan & Informasi Studio">
-        ${info()} Tentang
+      <button id="btn-dashboard-splash" class="btn-sm" style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-tertiary);color:var(--text-secondary);border:1px solid var(--border-default);border-radius:6px;padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s" title="Open About & Studio Info">
+        ${info()} About
       </button>
 
-      <button id="btn-dashboard-guide" class="btn-sm" style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-subtle);color:var(--accent-hover);border:1px solid rgba(76,139,245,0.3);border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s" title="Putar Tur Panduan Interaktif">
-        ${bookOpen()} Panduan
+      <button id="btn-dashboard-guide" class="btn-sm" style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-subtle);color:var(--accent-hover);border:1px solid rgba(76,139,245,0.3);border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s" title="Start Interactive Tour">
+        ${bookOpen()} Guide
       </button>
 
       ${user ? `

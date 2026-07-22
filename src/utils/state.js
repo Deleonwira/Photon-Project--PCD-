@@ -11,6 +11,7 @@ const state = {
   // Editor
   activeTool: 'pointer',
   activePanel: 'properties',
+  panelsCollapsed: false,
   zoomLevel: 100,
   imageLoaded: false,
   menuOpen: null,

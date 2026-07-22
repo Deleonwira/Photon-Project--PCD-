@@ -8,9 +8,24 @@ import { apiPost } from '../utils/api.js';
 let mainCanvas = null;
 let mainCtx = null;
 let originalImageData = null;   // Stored on first load for "Reset" (C2)
+let originalLoadedImage = null; // Stored copy of loadedImageElement on first load
+let originalImageTransform = null;
+let originalImageInfo = null;
 let currentFileName = '';
 let loadedImageElement = null;  // The raw Image object for interaction layer
 const imageLoadCallbacks = [];  // Hooks for other services (e.g. HistoryStack)
+
+function cloneImageToCanvas(img) {
+  if (!img) return null;
+  const w = img.naturalWidth || img.width;
+  const h = img.naturalHeight || img.height;
+  if (!w || !h) return null;
+  const copy = document.createElement('canvas');
+  copy.width = w;
+  copy.height = h;
+  copy.getContext('2d').drawImage(img, 0, 0, w, h);
+  return copy;
+}
 
 export function getLoadedImage() { return loadedImageElement; }
 export function setLoadedImage(img) { loadedImageElement = img; }
@@ -247,6 +262,7 @@ export async function loadImageFile(file) {
 
       // Store original for reset
       originalImageData = mainCtx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+      originalLoadedImage = cloneImageToCanvas(img);
       currentFileName = file.name;
       loadedImageElement = img;
 
@@ -261,16 +277,21 @@ export async function loadImageFile(file) {
         imgY = Math.round((ch - imgH) / 2);
       }
 
+      const initialTransform = { x: imgX, y: imgY, width: imgW, height: imgH, rotation: 0 };
+      const initialInfo = {
+        name: file.name,
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+        format: file.type,
+        size: formatFileSize(file.size),
+      };
+      originalImageTransform = { ...initialTransform };
+      originalImageInfo = { ...initialInfo };
+
       setState({
         imageLoaded: true,
-        imageInfo: {
-          name: file.name,
-          width: img.naturalWidth,
-          height: img.naturalHeight,
-          format: file.type,
-          size: formatFileSize(file.size),
-        },
-        imageTransform: { x: imgX, y: imgY, width: imgW, height: imgH },
+        imageInfo: initialInfo,
+        imageTransform: initialTransform,
         statusMessage: `Loaded: ${file.name} (${img.width}×${img.height})`,
       });
 
@@ -339,6 +360,86 @@ export function putImageData(imageData) {
 
 export function getOriginalImageData() {
   return originalImageData;
+}
+
+export function resetToOriginalImage() {
+  if (!originalImageData && !originalLoadedImage) {
+    setState({ statusMessage: 'No original image to reset to' });
+    return false;
+  }
+
+  if (originalLoadedImage) {
+    loadedImageElement = cloneImageToCanvas(originalLoadedImage);
+  }
+
+  if (originalImageData && mainCanvas && mainCtx) {
+    mainCanvas.width = originalImageData.width;
+    mainCanvas.height = originalImageData.height;
+    mainCtx.putImageData(originalImageData, 0, 0);
+  }
+
+  const transform = originalImageTransform ? { ...originalImageTransform } : null;
+  const info = originalImageInfo ? { ...originalImageInfo } : getState().imageInfo;
+
+  setState({
+    imageLoaded: true,
+    imageTransform: transform,
+    imageInfo: info,
+    filterPreview: { brightness: 0, contrast: 0 },
+    sharpenPreview: { amount: 0 },
+    cropRegion: null,
+    statusMessage: 'Reset to original image',
+  });
+
+  imageLoadCallbacks.forEach(fn => fn());
+  return true;
+}
+
+export async function deleteLoadedImage(confirm = true) {
+  if (!getState().imageLoaded && !loadedImageElement) {
+    setState({ statusMessage: 'No image to delete' });
+    return false;
+  }
+
+  if (confirm) {
+    const { showConfirmDialog } = await import('../components/ConfirmDialog.js');
+    const ok = await showConfirmDialog({
+      title: 'Delete Image',
+      message: 'Are you sure you want to delete the current image from canvas?',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      danger: true,
+    });
+    if (!ok) return false;
+  }
+
+  loadedImageElement = null;
+  originalLoadedImage = null;
+  originalImageData = null;
+  originalImageTransform = null;
+  originalImageInfo = null;
+
+  if (mainCanvas && mainCtx) {
+    const bg = getState().projectBackground;
+    if (bg && bg !== 'transparent') {
+      mainCtx.fillStyle = bg;
+      mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    } else {
+      mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+    }
+  }
+
+  setState({
+    imageLoaded: false,
+    imageTransform: null,
+    imageInfo: { name: '', width: 0, height: 0, format: '', size: '' },
+    cropRegion: null,
+    filterPreview: { brightness: 0, contrast: 0 },
+    sharpenPreview: { amount: 0 },
+    statusMessage: 'Image deleted',
+  });
+
+  return true;
 }
 
 export function getCurrentFileName() {
