@@ -11,6 +11,9 @@ import { flipH, flipV, rotate90CW, rotate90CCW, rotate180 } from '../services/Tr
 import { equalizeHistogram } from '../services/EnhanceService.js';
 import { toGrayscale, channelRed, channelGreen, channelBlue } from '../services/ColorService.js';
 
+import { startTour } from './PageGuide.js';
+import { openSplashScreen } from './SplashScreen.js';
+
 // ── Menu Data (maps every DOCX spec feature) ──────────────
 const MENUS = [
   { id: 'file', label: 'File', items: [
@@ -96,6 +99,11 @@ const MENUS = [
   ]},
   { id: 'ai', label: 'AI', className: 'ai-menu', items: [
     { id: 'cnn', label: 'Object Recognition (CNN)' },
+  ]},
+  { id: 'help', label: 'Help', items: [
+    { id: 'tour-guide', label: 'Panduan Fitur (Interactive Tour)' },
+    'sep',
+    { id: 'splash-about', label: 'Tentang Photon (Splash Screen)' },
   ]},
 ];
 
@@ -250,6 +258,14 @@ function handleMenuAction(action) {
     // Open the Before/After comparison modal
     const btn = document.querySelector('#btn-compare');
     if (btn) btn.click();
+  }
+  if (action === 'tour-guide') {
+    startTour('editor', true);
+    return;
+  }
+  if (action === 'splash-about') {
+    openSplashScreen();
+    return;
   }
   if (action === 'export') {
     openExportModal();

@@ -16,6 +16,12 @@ import './styles/new-project.css';
 import './styles/export.css';
 import './styles/login.css';
 import './styles/interaction.css';
+import './styles/splash.css';
+import './styles/guide.css';
+
+// ── Onboarding & Guide Components ──────────────────────────
+import { openSplashScreen, shouldShowSplashOnBoot } from './components/SplashScreen.js';
+import { startTour } from './components/PageGuide.js';
 
 // ── Router ─────────────────────────────────────────────────
 import { initRouter } from './utils/router.js';
@@ -248,6 +254,11 @@ async function switchView(view) {
     mountDashboard();
     viewDashboard.classList.remove('hidden');
   }
+
+  // Auto-start interactive page guide for new visits to this view
+  setTimeout(() => {
+    startTour(view, false);
+  }, 400);
 }
 
 // ── Navigation Events ──────────────────────────────────────
@@ -272,5 +283,12 @@ window.addEventListener('photon-save-project', () => {
 // ── Boot ───────────────────────────────────────────────────
 subscribe('currentView', switchView);
 initRouter();
+
+// Auto-show Splash Screen on initial application load (unless disabled by user)
+if (shouldShowSplashOnBoot()) {
+  setTimeout(() => {
+    openSplashScreen();
+  }, 200);
+}
 
 console.log('%cPhoton loaded', 'color:#4C8BF5;font-weight:bold;font-size:14px');
