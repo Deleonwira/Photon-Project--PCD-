@@ -2,6 +2,7 @@
 import { setState, getState, subscribe } from '../utils/state.js';
 import { getCanvas, getCtx, getLoadedImage, setLoadedImage } from '../services/ImageEngine.js';
 import { apiPost } from '../utils/api.js';
+import { pushState } from '../services/HistoryStack.js';
 
 // ── Internal state ──────────────────────────────────────────
 let imgState = null;      // { x, y, width, height, rotation } in canvas-space px
@@ -10,6 +11,7 @@ let isResizing = false;
 let activeHandle = null;  // 'nw' | 'ne' | 'sw' | 'se'
 let dragStart = { x: 0, y: 0 };
 let stateStart = null;    // snapshot of imgState at drag/resize start
+let _dragUndoPushed = false; // tracks if undo snapshot has been pushed for current drag
 let selected = false;
 let layerEl = null;
 let selectBoxEl = null;
@@ -418,6 +420,8 @@ function onMouseDown(e) {
   // Interaction works on ALL tools — no tool gating
   if (!imgState) return;
 
+  _dragUndoPushed = false;
+
   // Blur any focused input fields so manual values don't get stuck
   if (document.activeElement && document.activeElement.tagName === 'INPUT') {
     document.activeElement.blur();
@@ -472,6 +476,14 @@ function onMouseMove(e) {
   // Raw mouse delta in canvas space
   const rawDx = (e.clientX - dragStart.x) * scaleX;
   const rawDy = (e.clientY - dragStart.y) * scaleY;
+
+  // Push undo state ONCE on initial movement during drag or resize
+  if ((isDragging || isResizing) && stateStart && !_dragUndoPushed) {
+    if (Math.abs(rawDx) > 1 || Math.abs(rawDy) > 1) {
+      pushState(isResizing ? 'Resize Image' : 'Move Image');
+      _dragUndoPushed = true;
+    }
+  }
 
   // Un-rotate delta to image-local space (inverse rotation by θ)
   const rot = (imgState.rotation || 0) * Math.PI / 180;
@@ -562,6 +574,7 @@ function onMouseUp() {
     isResizing = false;
     activeHandle = null;
     stateStart = null;
+    _dragUndoPushed = false;
   }
 }
 

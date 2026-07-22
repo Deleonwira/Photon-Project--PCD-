@@ -690,7 +690,14 @@ function wireSliders(root) {
   const inpH = root.querySelector('#inp-rh');
   const lockAspect = root.querySelector('#lock-aspect');
 
-  function pushTransform() {
+  let _inputTransformUndoPushed = false;
+  [inpX, inpY, inpW, inpH].forEach(inp => {
+    if (!inp) return;
+    inp.addEventListener('focus', () => { _inputTransformUndoPushed = false; });
+    inp.addEventListener('blur', () => { _inputTransformUndoPushed = false; });
+  });
+
+  function pushTransform(label = 'Move / Resize') {
     const t = getState().imageTransform;
     if (!t) return;
     const x = parseInt(inpX?.value ?? t.x);
@@ -698,12 +705,16 @@ function wireSliders(root) {
     const w = parseInt(inpW?.value ?? t.width);
     const h = parseInt(inpH?.value ?? t.height);
     if (!isNaN(x) && !isNaN(y) && !isNaN(w) && !isNaN(h) && w > 0 && h > 0) {
+      if (!_inputTransformUndoPushed) {
+        pushState(label);
+        _inputTransformUndoPushed = true;
+      }
       setState({ imageTransform: { ...t, x, y, width: w, height: h } });
     }
   }
 
-  if (inpX) inpX.addEventListener('input', pushTransform);
-  if (inpY) inpY.addEventListener('input', pushTransform);
+  if (inpX) inpX.addEventListener('input', () => pushTransform('Move Image'));
+  if (inpY) inpY.addEventListener('input', () => pushTransform('Move Image'));
 
   if (inpW) inpW.addEventListener('input', () => {
     if (lockAspect?.checked) {
@@ -716,7 +727,7 @@ function wireSliders(root) {
         }
       }
     }
-    pushTransform();
+    pushTransform('Resize Image');
   });
 
   if (inpH) inpH.addEventListener('input', () => {
@@ -730,7 +741,7 @@ function wireSliders(root) {
         }
       }
     }
-    pushTransform();
+    pushTransform('Resize Image');
   });
 
   // ── Reset buttons ──────────────────────────────────────
@@ -739,6 +750,7 @@ function wireSliders(root) {
     btnResetPos.addEventListener('click', () => {
       const t = getState().imageTransform;
       if (t) {
+        pushState('Reset Position');
         const canvas = document.querySelector('#main-canvas');
         const cx = canvas ? Math.round((canvas.width - t.width) / 2) : 0;
         const cy = canvas ? Math.round((canvas.height - t.height) / 2) : 0;
@@ -754,6 +766,7 @@ function wireSliders(root) {
       const info = getState().imageInfo;
       const canvas = document.querySelector('#main-canvas');
       if (t && info && info.width > 0 && canvas) {
+        pushState('Reset Size');
         // Fit image within canvas (contain behavior)
         const scale = Math.min(canvas.width / info.width, canvas.height / info.height, 1);
         const w = Math.round(info.width * scale);
