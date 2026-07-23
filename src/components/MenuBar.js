@@ -147,7 +147,7 @@ function openDropdown(menuItem, dropdown) {
 
 export function initMenuBar(container) {
   // Home button + Logo + title
-  let html = `<button class="menubar-home-btn" id="menubar-home" title="Back to Dashboard">${home()}</button>`;
+  let html = `<button class="menubar-home-btn" id="menubar-home" data-tooltip="Back to Dashboard">${home()}</button>`;
   html += `<img src="/logo.png" alt="Photon" class="menubar-logo" />`;
   html += `<span class="menubar-title" id="menubar-title">Photon</span>`;
 

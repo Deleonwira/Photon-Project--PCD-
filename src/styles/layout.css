@@ -61,7 +61,7 @@
   border-right: 1px solid var(--border-subtle);
   padding-top: var(--sp-2);
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: visible;
   user-select: none;
   -webkit-user-select: none;
 }

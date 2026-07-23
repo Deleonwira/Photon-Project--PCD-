@@ -11,13 +11,13 @@ export function initCanvas(container) {
       </div>
     </div>
     <div class="zoom-controls">
-      <button class="zoom-btn" id="zoom-out-btn" title="Zoom Out">${zoomOut()}</button>
-      <span class="zoom-level" id="zoom-display">100%</span>
-      <button class="zoom-btn" id="zoom-in-btn" title="Zoom In">${zoomIn()}</button>
+      <button class="zoom-btn" id="zoom-out-btn" data-tooltip="Zoom Out (Ctrl+-)">${zoomOut()}</button>
+      <span class="zoom-level" id="zoom-display" data-tooltip="Zoom Level">100%</span>
+      <button class="zoom-btn" id="zoom-in-btn" data-tooltip="Zoom In (Ctrl+=)">${zoomIn()}</button>
       <div class="zoom-divider"></div>
-      <button class="zoom-btn" id="zoom-fit-btn" title="Fit to Screen">${maximize2()}</button>
+      <button class="zoom-btn" id="zoom-fit-btn" data-tooltip="Fit to Screen (Ctrl+0)">${maximize2()}</button>
       <div class="zoom-divider"></div>
-      <button class="compare-btn" id="btn-compare" title="Before / After Comparison">
+      <button class="compare-btn" id="btn-compare" data-tooltip="Before / After Comparison">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
         <span>Compare</span>
       </button>

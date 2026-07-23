@@ -1,6 +1,6 @@
 /* PHOTON — Centralized API Service */
 
-export const API_BASE = 'http://localhost:5000/api';
+export const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 /**
  * GET request to the backend.

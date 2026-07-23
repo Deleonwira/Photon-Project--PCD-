@@ -3,6 +3,7 @@
 import { getCanvasBase64 } from './ImageEngine.js';
 import { getLoadedImage } from './ImageEngine.js';
 import { setState } from '../utils/state.js';
+import { API_BASE } from '../utils/api.js';
 
 const AI_TIMEOUT = 15000; // 15s timeout (BOE-217)
 
@@ -39,7 +40,7 @@ export async function recognizeOnly(target = 'all', confidence = 0.4) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), AI_TIMEOUT);
 
-    const res = await fetch('http://localhost:5000/api/ai/recognize', {
+    const res = await fetch(`${API_BASE}/ai/recognize`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image_b64: b64, target, confidence }),
